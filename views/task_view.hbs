@@ -1,0 +1,204 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title> Task List </title>
+        <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Task List</h2>
+            <button class="btn btn-success" data-toggle="modal" data-target="#AddModal"> Add New </button>
+            <td></td>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#DeleteAllModal"> Delete Finish Task </button>
+            <table class="table table-striped" id="mytable">
+            <thead>
+                <tr>
+                    <th>Task Ke</th>
+                    <th>Task List</th>
+                    <th>Sub Task</th>
+                    <th>Status</th>
+                    <th>Di Edit</th>
+                    <th>Opsi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each results}}
+                <tr>
+                    <td>{{ task_id }}</td>
+                    <td>{{ task_list }}</td>
+                    <td>{{ task_sub }}</td>
+                    <td>{{ task_status }}</td>
+                    <td>{{ task_selesai }}</td>
+                    <td>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#EditModal" data-id="{{ task_id }}" data-task_status="{{ task_status }}"> Edit </a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-toggle="modal" data-target="#DeleteModal" data-id="{{ task_id }}"> Delete </a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+            </table>
+        </div>
+
+        <!-- Add Task -->
+        <form action="/save" method="POST">
+            <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"> Add New Task </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <select id="task-list" name="task_list" class="custom-select d-block w-100" required="">
+                                    <option></option>
+                                    <option value="Ruang Tamu">Ruang Tamu</option>
+                                    <option value="Ruang Keluarga">Ruang Keluarga</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="task_sub" name="task_sub" class="custom-select d-block w-100" required="">
+                                    <option></option>
+                                    <option value="Mengepel Lantai">Mengepel Lantai</option>
+                                    <option value="Menyapu Lantai">Menyapu Lantai</option>
+                                    <option value="Membersihkan Meja">Membersihkan Meja</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select id="task_status" name="task_status" class="custom-select d-block w-100" required="">
+                                    <option></option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Finish">Finish</option>
+                                </select>    
+                            </div>
+                            <div class="form-group">
+                                <input type="date" name="task_selesai" class="form-control" required="">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> Close </button>
+                            <button type="submit" class="btn btn-primary"> Save </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!--Delete All Task -->
+        <form id="add-row-form" action="/deleteall" method="POST">
+            <div class="modal fade" id="DeleteAllModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel"> Delete </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <strong> Anda Yakin Mau Menghapus Semua Task Yang Selesai ?</strong>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="task_id" class="form-control task_id" required="">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                            <button type="submit" class="btn btn-success"> Delete </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Update Task -->
+        <form action="/update" method="POST">
+            <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"> Edit Task </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <select id="task_status" class="custom-select d-block w-100" required="" >
+                                    <option></option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Finish">Finish</option>
+                                </select>    
+                            </div>
+                            <div class="form-group">
+                                <input type="date" name="task_selesai" class="form-control" value="Tanggal" required="">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="task_id" class="task_id">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> Close </button>
+                            <button type="submit" class="btn btn-primary"> Update </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!--Delete Task -->
+        <form id="add-row-form" action="/delete" method="POST">
+            <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel"> Delete </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <strong> Anda Yakin Mau Menghapus Task Ini ?</strong>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="task_id" class="form-control task_id" required="">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                            <button type="submit" class="btn btn-success"> Delete </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+
+        <script src="/assets/js/jquery-3.5.1.js"></script>
+        <script src="/assets/js/bootstrap.js"></script>
+        <script>
+            $(document).ready(function(){
+                //Tampilkan All Delete
+                $(#mytable).on('click', '.delete', function(){
+                    var task_id = $(this).data('task_id');
+                    $('#DeleteAllModal').modal('show');
+                    $('.task_id').remove(task_id);
+                });
+                //Tampilkan Data Edit
+                $(#mytable).on('click', '.edit', function(){
+                    var task_id = $(this).data('task_id');
+                    var task_list = $(this).data('task_list');
+                    var task_sub = $(this).data('task_sub');
+                    var task_status = $(this).data('task_status');
+                    var task_selesai = $(this).data('task_selesai');
+                    $('#EditModal').modal('show');
+                    $('.task_list').val(task_list);
+                    $('.task_sub').val(task_sub);
+                    $('.task_status').val(task_status);
+                    $('.task_selesai').val(task_selesai);
+                    $('.task_id').val(task_id);
+                });
+                //Tampilkan Delete
+                $(#mytable).on('click', '.delete', function(){
+                    var task_id = $(this).data('task_id');
+                    $('#DeleteModal').modal('show');
+                    $('.task_id').remove(task_id);
+                });
+            });
+        </script>
+    </body>
+</html>
